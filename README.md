@@ -16,7 +16,7 @@ Slow down web games by changing `requestAnimationFrame()`, `performance.now()` a
 
 To change the factor it slows down, find the `((d=...)=>{...` at the start. `d=1` is when it runs normally. `d=0.5` is half speed. The default, `d=0.2` is 20% speed. To make the game run faster, set d over 1. `d=5` runs at 5x speed.
 
-*Note: If a game uses `setInterval()`, this script won't work because `setInterval()` only gets run once.*
+*Note: If a game uses `setInterval()`, this script won't work because `setInterval()` only gets called once.*
 
 *Note 2: If you end up using the non-minified script, you won't find the `d=`. Change the parameter at the end `...})(0.2);` to get the same effect*
 
