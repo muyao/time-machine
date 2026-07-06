@@ -20,6 +20,8 @@ To change the factor it slows down, find the `((d=...)=>{...` at the start. `d=1
 
 *Note 2: If you end up using the non-minified script, you won't find the `d=`. Change the parameter at the end `...})(0.2);` to get the same effect*
 
+*Note 3: The pausing-unpausing for each and every thread is slow, yes I know. But I don't know any other way of fixing it because webworker threads have a different global scope than the main thread.*
+
 ## Contributing
 
 Contributions are what make the open-source community such an amazing place. Any contributions you make are greatly appreciated.
