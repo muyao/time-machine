@@ -3,7 +3,7 @@ window.addEventListener("message", (event) => {
 
 	if (event.data.type === "GET_SETTINGS") {
 		chrome.storage.sync.get({
-			dilationFactor: 0.5
+			dilationFactor: 1.0
 		}, (allSettings) => {
 			window.postMessage({
 				source: "TIME_MACHINE_SETTINGS",
