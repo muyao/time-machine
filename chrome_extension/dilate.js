@@ -1,5 +1,7 @@
 (() => {
 
+	console.log(`[Time Machine (${window.location.origin})] Hostname ${window.location.hostname}`);
+
 	function dilateTime(dilationFactor) {
 		// Code string executed inside worker scopes
 		const workerPatchCode = `
@@ -82,7 +84,8 @@
 
 				const blob = new Blob([blobCode], { type: "application/javascript" });
 				const blobURL = URL.createObjectURL(blob);
-
+				
+				// This might error sometimes
 				return new NativeWorker(blobURL, options);
 			};
 
@@ -130,7 +133,7 @@
 			subtree: true
 		});
 
-		console.log(`Time dilation ${dilationFactor}x speed`);
+		console.log(`[Time Machine (${window.location.origin})] Time dilation ${dilationFactor}x speed`);
 	}
 
 	window.addEventListener("message", (event) => {
