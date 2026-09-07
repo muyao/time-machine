@@ -91,7 +91,6 @@
 
 		// Apply time dilation to main page window & same-origin frames
 		const patchContext = (ctx) => {
-			debugger;
 			try {
 				if (!ctx || ctx.__timeDilationApplied) return;
 				ctx.__timeDilationApplied = true;
