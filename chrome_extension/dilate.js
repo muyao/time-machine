@@ -1,8 +1,11 @@
 (() => {
 
-	console.log(`[Time Machine (${window.location.origin})] Hostname ${window.location.hostname}`);
+	function dilateTime(dilationFactor, targHsts) {
 
-	function dilateTime(dilationFactor) {
+		if (!targHsts.some(e => window.location.hostname.includes(e))) return;
+
+		console.log(`[Time Machine (${window.location.origin})] Hostname ${window.location.hostname}`);
+
 		// Code string executed inside worker scopes
 		const workerPatchCode = `
 			(function (d) {
@@ -84,7 +87,7 @@
 
 				const blob = new Blob([blobCode], { type: "application/javascript" });
 				const blobURL = URL.createObjectURL(blob);
-				
+
 				// This might error sometimes
 				return new NativeWorker(blobURL, options);
 			};
@@ -141,9 +144,9 @@
 		if (event.source !== window || event.data?.source !== "TIME_MACHINE_SETTINGS") return;
 
 		if (event.data.type === "SETTINGS_RESPONSE") {
-			dilationFactor = event.data.payload.dilationFactor;
-
-			dilateTime(dilationFactor);
+			const dilationFactor = event.data.payload.dilationFactor;
+			const targHsts = event.data.payload.targHsts;
+			dilateTime(dilationFactor, targHsts);
 		}
 	});
 
