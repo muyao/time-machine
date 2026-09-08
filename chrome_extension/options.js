@@ -1,8 +1,6 @@
-const dilInput = document.querySelector("#dilInput");
-const dilForm = document.querySelector("#dilForm");
-
-const hstInput = document.querySelector("#hstInput");
-const hstForm = document.querySelector("#hstForm");
+const settingsForm = document.querySelector("#settings-form");
+const dilInput = document.querySelector("#dil-input");
+const hstInput = document.querySelector("#hsts-input");
 
 // Load current settings when the options page opens
 chrome.storage.sync.get({ dilationFactor: "", targHsts: [] }, (items) => {
@@ -11,7 +9,7 @@ chrome.storage.sync.get({ dilationFactor: "", targHsts: [] }, (items) => {
 });
 
 // Save settings when clicking the save button
-dilForm.addEventListener("submit", () => {
+settingsForm.addEventListener("submit", () => {
 	const dilVal = parseFloat(dilInput.value);
 	if (!dilVal) return;
 	if (isNaN(dilVal)) return;
@@ -19,8 +17,17 @@ dilForm.addEventListener("submit", () => {
 	if (dilVal > 1000) return;
 	chrome.storage.sync.set({ dilationFactor: dilVal }, () => { });
 });
-hstForm.addEventListener("submit", () => {//TODO
+settingsForm.addEventListener("submit", () => {
 	const hstVal = hstInput.value;
 	if (!hstVal) return;
-	chrome.storage.sync.set({ targHsts: hstVal.replaceAll(" ", "").split(",") }, () => { });
+	chrome.storage.sync.set({
+		targHsts: hstVal
+			.split(",")
+			.map(str => str.trim())
+			.map(str => /^https?:\/\//i.test(str) ? str : `https://${str}`)
+			.filter(str => URL.canParse(str))
+			.map(str => new URL(str).hostname)
+			.map(str => str.replace(/^www\./, ""))
+			.filter(str => str.includes(".") && !str.startsWith(".") && !str.endsWith("."))
+	}, () => { });
 });

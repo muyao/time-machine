@@ -28,16 +28,19 @@
 			padding: 2.5rem;
 			overflow: hidden;
 		}
+
+		#settings-submit {
+			display: none;
+		}
 	</style>
 </head>
 
 <body>
 
-	<form id="dilForm">
-		<input autofocus placeholder="Dilation factor (Number between 0.0 and 1000.0)" id="dilInput">
-	</form>
-	<form id="hstForm">
-		<input placeholder="Target hostnames (Separate with comma)" id="hstInput">
+	<form id="settings-form">
+		<input autofocus placeholder="Dilation factor (Number between 0.0 and 1000.0)" id="dil-input">
+		<input placeholder="Target hostnames (Separate with comma)" id="hsts-input">
+		<button type="submit" id="settings-submit"></button>
 	</form>
 
 	<script src="options.js"></script>
