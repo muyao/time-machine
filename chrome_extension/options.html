@@ -16,10 +16,15 @@
 			margin-bottom: 2rem;
 		}
 
-		form>.submit-hint {
+		form>.settings-hint {
 			font-family: inherit;
 			font-size: 0.9rem;
 			margin-top: 0.7rem;
+
+		}
+
+		#submit-status {
+			color: green;
 		}
 
 		input {
@@ -34,7 +39,7 @@
 			margin-bottom: 0.5rem;
 		}
 
-		#settings-submit {
+		.settings-submit {
 			display: none;
 		}
 	</style>
@@ -47,8 +52,9 @@
 	<form id="settings-form">
 		<input autofocus placeholder="Dilation factor (Number between 0.0 and 1000.0)" id="dil-input">
 		<input placeholder="Target hostnames (Separate with comma)" id="hsts-input">
-		<button type="submit" id="settings-submit"></button>
-		<p class="submit-hint">Press Enter to save settings</p>
+		<button type="submit" class="settings-submit"></button>
+		<p class="settings-hint">Press Enter to save settings</p>
+		<p class="settings-hint" id="submit-status" hidden>Settings saved!</p>
 	</form>
 
 	<script src="options.js"></script>

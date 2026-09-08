@@ -1,6 +1,7 @@
 const settingsForm = document.querySelector("#settings-form");
 const dilInput = document.querySelector("#dil-input");
 const hstInput = document.querySelector("#hsts-input");
+const submitStatus = document.querySelector("#submit-status")
 
 // Load current settings when the options page opens
 chrome.storage.sync.get({ dilationFactor: "", targHsts: [] }, (items) => {
@@ -8,16 +9,16 @@ chrome.storage.sync.get({ dilationFactor: "", targHsts: [] }, (items) => {
 	hstInput.value = items.targHsts.join(", ");
 });
 
-// Save settings when clicking the save button
-settingsForm.addEventListener("submit", () => {
+function syncDil() {
 	const dilVal = parseFloat(dilInput.value);
 	if (!dilVal) return;
 	if (isNaN(dilVal)) return;
 	if (dilVal < 0) return;
 	if (dilVal > 1000) return;
 	chrome.storage.sync.set({ dilationFactor: dilVal }, () => { });
-});
-settingsForm.addEventListener("submit", () => {
+}
+
+function syncHsts() {
 	const hstVal = hstInput.value;
 	if (!hstVal) return;
 	chrome.storage.sync.set({
@@ -30,4 +31,15 @@ settingsForm.addEventListener("submit", () => {
 			.map(str => str.replace(/^www\./, ""))
 			.filter(str => str.includes(".") && !str.startsWith(".") && !str.endsWith("."))
 	}, () => { });
+}
+
+// Save settings when clicking the save button
+settingsForm.addEventListener("submit", (ev) => {
+	ev.preventDefault();
+	syncDil();
+	syncHsts();
+	submitStatus.hidden = false;
+	setTimeout(() => {
+		submitStatus.hidden = true;
+	}, 2500);
 });
