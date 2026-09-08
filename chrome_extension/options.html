@@ -5,17 +5,21 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Options</title>
+	<link rel="stylesheet" href="https://muyao.app/style-global.css">
 	<style>
-		* {
-			margin: 0;
-			padding: 0;
+		body {
+			overflow: hidden;
 		}
 
-		body {
-			background-color: black;
-			color: white;
-			padding: 2.5rem;
-			overflow: hidden;
+		h1 {
+			font-size: 2.3rem;
+			margin-bottom: 2rem;
+		}
+
+		form>.submit-hint {
+			font-family: inherit;
+			font-size: 0.9rem;
+			margin-top: 0.7rem;
 		}
 
 		input {
@@ -23,10 +27,11 @@
 			box-sizing: border-box;
 			background-color: black;
 			border: 1px solid white;
-			border-radius: 4px;
+			border-radius: 0.3rem;
 			color: white;
 			font-family: 'Courier New', Courier, monospace;
 			padding: 0.7rem;
+			margin-bottom: 0.5rem;
 		}
 
 		#settings-submit {
@@ -37,10 +42,13 @@
 
 <body>
 
+	<h1>Time Machine Options</h1>
+
 	<form id="settings-form">
 		<input autofocus placeholder="Dilation factor (Number between 0.0 and 1000.0)" id="dil-input">
 		<input placeholder="Target hostnames (Separate with comma)" id="hsts-input">
 		<button type="submit" id="settings-submit"></button>
+		<p class="submit-hint">Press Enter to save settings</p>
 	</form>
 
 	<script src="options.js"></script>
