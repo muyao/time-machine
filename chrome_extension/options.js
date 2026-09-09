@@ -20,7 +20,6 @@ function syncDil() {
 
 function syncHsts() {
 	const hstVal = hstInput.value;
-	if (!hstVal) return;
 	chrome.storage.sync.set({
 		targHsts: hstVal
 			.split(",")
