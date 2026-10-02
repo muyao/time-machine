@@ -14,7 +14,7 @@ function syncDil() {
 	if (!dilVal) return;
 	if (isNaN(dilVal)) return;
 	if (dilVal < 0) return;
-	if (dilVal > 1000) return;
+	if (dilVal > 1000000) return;
 	chrome.storage.sync.set({ dilationFactor: dilVal }, () => { });
 }
 
