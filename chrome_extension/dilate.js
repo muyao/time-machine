@@ -7,7 +7,7 @@
 		console.log(`[Time Machine (${window.location.origin})] Hostname ${window.location.hostname}`);
 
 		// Code string executed inside worker scopes
-		const workerPatchCode = `
+		const workerPatchCode = `\
 			(function (d) {
 				if (self.__timeWorkerApplied) return;
 				self.__timeWorkerApplied = true;
@@ -42,7 +42,7 @@
 				const workerBaseDir = absoluteURL.substring(0, absoluteURL.lastIndexOf("/") + 1);
 
 				// Overwrite importScripts, fetch, and XMLHttpRequest inside worker to resolve relative paths
-				const blobCode = `
+				const blobCode = `\
 					(function () {
 						const baseDir = "${workerBaseDir}";
 
