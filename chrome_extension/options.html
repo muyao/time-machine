@@ -6,57 +6,28 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Options</title>
 	<link rel="stylesheet" href="https://muyao.app/style-global.css">
-	<style>
-		body {
-			overflow: hidden;
-		}
-
-		h1 {
-			font-size: 2.3rem;
-			margin-bottom: 2rem;
-		}
-
-		form>.settings-hint {
-			font-family: inherit;
-			font-size: 0.9rem;
-			margin-top: 0.7rem;
-
-		}
-
-		#submit-status {
-			color: green;
-		}
-
-		input {
-			width: 100%;
-			box-sizing: border-box;
-			background-color: black;
-			border: 1px solid white;
-			border-radius: 0.3rem;
-			color: white;
-			font-family: 'Courier New', Courier, monospace;
-			padding: 0.7rem;
-			margin-bottom: 0.5rem;
-		}
-
-		.settings-submit {
-			display: none;
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-	<h1>Time Machine Options</h1>
-
-	<form id="settings-form">
-		<input autofocus placeholder="Dilation factor (Number between 0.0 and 1000.0)" id="dil-input">
-		<input placeholder="Target hostnames (Separate with comma)" id="hsts-input">
-		<button type="submit" class="settings-submit"></button>
-		<p class="settings-hint">Press Enter to save settings</p>
-		<p class="settings-hint" id="submit-status" hidden>Settings saved!</p>
-	</form>
-
+	<header>
+		<h1>
+			<span class="space-after maybe-hidden">Time Machine</span><span>Options</span>
+		</h1>
+	</header>
+	<main>
+		<form id="settings-form">
+			<input autofocus placeholder="Dilation factor (Number between 0.0 and 1000.0)" id="dil-input">
+			<input placeholder="Target hostnames (Separate with comma)" id="hsts-input">
+			<button type="submit" class="settings-submit"></button>
+			<div class="settings-hint">
+				<span>Press Enter to save settings</span>
+			</div>
+			<div class="settings-hint">
+				<span id="submit-status" style="opacity: 0.0;">Settings saved!</span>
+			</div>
+		</form>
+	</main>
 	<script src="options.js"></script>
 </body>
 

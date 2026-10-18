@@ -36,8 +36,8 @@ settingsForm.addEventListener("submit", (ev) => {
 	ev.preventDefault();
 	syncDil();
 	syncHsts();
-	submitStatus.hidden = false;
+	submitStatus.style.opacity = "1.0";
 	setTimeout(() => {
-		submitStatus.hidden = true;
+		submitStatus.style.opacity = "0.0";
 	}, 2500);
 });
