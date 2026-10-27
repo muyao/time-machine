@@ -8,24 +8,24 @@
 
         // Code string executed inside worker scopes
         const workerPatchCode = `\
-			(function (d) {
-				if (self.__timeWorkerApplied) return;
-				self.__timeWorkerApplied = true;
+            (function (d) {
+                if (self.__timeWorkerApplied) return;
+                self.__timeWorkerApplied = true;
 
-				const m = self, t = "bind", n = "number", o = performance, r = "prototype";
-				const a = o.now(), b = Date.now(), c = o.now[t](o), e = Date.now, f = m.Date;
-				const h = m.setTimeout[t](m), i = m.setInterval[t](m);
+                const m = self, t = "bind", n = "number", o = performance, r = "prototype";
+                const a = o.now(), b = Date.now(), c = o.now[t](o), e = Date.now, f = m.Date;
+                const h = m.setTimeout[t](m), i = m.setInterval[t](m);
 
-				o.now = function () { return a + ((c() - a) * d); };
-				Date.now = function () { return b + ((e() - b) * d); };
+                o.now = function () { return a + ((c() - a) * d); };
+                Date.now = function () { return b + ((e() - b) * d); };
 
-				function k(...q) { if (q.length === 0) return new f(Date.now()); return new f(...q); }
-				k[r] = f[r]; k.now = Date.now; k.UTC = f.UTC; k.parse = f.parse; m.Date = k;
+                function k(...q) { if (q.length === 0) return new f(Date.now()); return new f(...q); }
+                k[r] = f[r]; k.now = Date.now; k.UTC = f.UTC; k.parse = f.parse; m.Date = k;
 
-				m.setTimeout = function (l, p, ...q) { return h(l, typeof p === n ? p / d : p, ...q); };
-				m.setInterval = function (l, p, ...q) { return i(l, typeof p === n ? p / d : p, ...q); };
-			})(${dilationFactor});
-		`;
+                m.setTimeout = function (l, p, ...q) { return h(l, typeof p === n ? p / d : p, ...q); };
+                m.setInterval = function (l, p, ...q) { return i(l, typeof p === n ? p / d : p, ...q); };
+            })(${dilationFactor});
+        `;
 
         // Monkey-patch standard Web Worker constructor
         if (typeof window.Worker !== "undefined") {
@@ -43,47 +43,47 @@
 
                 // Overwrite importScripts, fetch, and XMLHttpRequest inside worker to resolve relative paths
                 const blobCode = `\
-					(function () {
-						const baseDir = "${workerBaseDir}";
+                    (function () {
+                        const baseDir = "${workerBaseDir}";
 
-						// Fix importScripts
-						const nativeImportScripts = self.importScripts;
-						self.importScripts = function (...urls) {
-							const resolved = urls.map(url => new URL(url, baseDir).href);
-							return nativeImportScripts.apply(self, resolved);
-						};
+                        // Fix importScripts
+                        const nativeImportScripts = self.importScripts;
+                        self.importScripts = function (...urls) {
+                            const resolved = urls.map(url => new URL(url, baseDir).href);
+                            return nativeImportScripts.apply(self, resolved);
+                        };
 
-						// Fix fetch (used by WASM streaming compilation)
-						const nativeFetch = self.fetch;
-						if (nativeFetch) {
-							self.fetch = function (input, init) {
-								if (typeof input === "string") {
-									input = new URL(input, baseDir).href;
-								} else if (input instanceof Request) {
-									input = new Request(new URL(input.url, baseDir).href, input);
-								}
-								return nativeFetch.call(self, input, init);
-							};
-						}
+                        // Fix fetch (used by WASM streaming compilation)
+                        const nativeFetch = self.fetch;
+                        if (nativeFetch) {
+                            self.fetch = function (input, init) {
+                                if (typeof input === "string") {
+                                    input = new URL(input, baseDir).href;
+                                } else if (input instanceof Request) {
+                                    input = new Request(new URL(input.url, baseDir).href, input);
+                                }
+                                return nativeFetch.call(self, input, init);
+                            };
+                        }
 
-						// Fix XMLHttpRequest (used by WASM fallback loader)
-						const NativeXHR = self.XMLHttpRequest;
-						if (NativeXHR) {
-							self.XMLHttpRequest = function () {
-								const xhr = new NativeXHR();
-								const nativeOpen = xhr.open;
-								xhr.open = function (method, url, ...args) {
-									const resolvedURL = new URL(url, baseDir).href;
-									return nativeOpen.call(this, method, resolvedURL, ...args);
-								};
-								return xhr;
-							};
-						}
-					})();
+                        // Fix XMLHttpRequest (used by WASM fallback loader)
+                        const NativeXHR = self.XMLHttpRequest;
+                        if (NativeXHR) {
+                            self.XMLHttpRequest = function () {
+                                const xhr = new NativeXHR();
+                                const nativeOpen = xhr.open;
+                                xhr.open = function (method, url, ...args) {
+                                    const resolvedURL = new URL(url, baseDir).href;
+                                    return nativeOpen.call(this, method, resolvedURL, ...args);
+                                };
+                                return xhr;
+                            };
+                        }
+                    })();
 
-					${workerPatchCode}
-					importScripts("${absoluteURL}");
-				`;
+                    ${workerPatchCode}
+                    importScripts("${absoluteURL}");
+                `;
 
                 const blob = new Blob([blobCode], { type: "application/javascript" });
                 const blobURL = URL.createObjectURL(blob);
